@@ -2,53 +2,89 @@
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
+    <!-- viewport-fit=cover permite que la app ocupe toda la pantalla en móviles con notch -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <title>¿Cuál leo?</title>
+
+    <!-- Hoja de estilos principal de la app -->
     <link rel="stylesheet" href="/src/style.css" />
+
+    <!-- p5.js se carga desde CDN como script global para evitar conflictos con los módulos ES de Vite.
+         Al cargarlo así, p5 queda disponible en el scope global y podemos usarlo en modo instancia
+         desde main.js sin necesidad de importarlo como módulo -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.4/p5.min.js"></script>
   </head>
   <body>
     <div id="app">
 
-      <!-- CABECERA -->
+      <!-- CABECERA: título y subtítulo de la app -->
       <header>
         <h1>¿Cual leo?</h1>
         <p class="subtitle">Tu proxima lectura te espera</p>
       </header>
 
-      <!-- TABS -->
+      <!-- TABS: navegación entre las dos pantallas principales.
+           La lógica de cambio de tab se gestiona desde main.js con addEventListener,
+           no con onclick, para compatibilidad con módulos ES -->
       <div class="tabs">
+        <!-- Tab activa por defecto: lista de pendientes -->
         <button class="tab active" id="tab-btn-list">
-          Mis pendientes <span class="count-badge" id="count">0</span>
+          Mis pendientes
+          <!-- Badge con el número de libros pendientes, actualizado desde main.js -->
+          <span class="count-badge" id="count">0</span>
         </button>
+        <!-- Tab de sorteo -->
         <button class="tab" id="tab-btn-random">¡Decídete!</button>
       </div>
 
-      <!-- PANTALLA: MIS PENDIENTES -->
+      <!-- PANTALLA: MIS PENDIENTES
+           Visible por defecto al arrancar la app -->
       <div class="content" id="tab-list">
+
+        <!-- Formulario para añadir libros.
+             No usamos <form> para evitar el comportamiento de submit del navegador -->
         <div class="add-book">
           <input type="text" id="input-title" placeholder="Título del libro..." />
           <input type="text" id="input-author" placeholder="Aut@r..." />
+          <!-- El evento click de este botón se vincula desde main.js -->
           <button class="add-btn" id="add-btn">+ Añadir a mis pendientes</button>
         </div>
+
+        <!-- Etiqueta de sección -->
         <div class="section-label">Mis pendientes</div>
-        <div class="book-list" id="book-list">
-        </div>
+
+        <!-- Contenedor de la lista de libros.
+             Se rellena dinámicamente desde la función renderList() en main.js -->
+        <div class="book-list" id="book-list"></div>
       </div>
 
-      <!-- PANTALLA: ELEGIR -->
+      <!-- PANTALLA: ELEGIR
+           Oculta por defecto, se muestra al pulsar la tab "¡Decídete!" -->
       <div class="content" id="tab-random" style="display:none;">
+
+        <!-- Contenedor del canvas de p5.js.
+             La instancia de p5 se inyecta aquí desde initP5() en main.js -->
         <div class="canvas-area" id="canvas-container"></div>
+
+        <!-- Botón principal de sorteo.
+             También se activa agitando el móvil gracias al acelerómetro -->
         <button class="shake-btn" id="shake-btn">Agita el móvil o haz clic aquí</button>
+
+        <!-- Tarjeta de resultado, oculta hasta que termina la animación de sorteo.
+             Se muestra desde showResult() en main.js con el libro ganador -->
         <div class="result-card" id="result-card">
           <div class="result-deco">✦ ✦ ✦</div>
           <div class="result-label">¡Decídete!</div>
+          <!-- Título y autor se rellenan dinámicamente desde main.js -->
           <div class="result-title" id="result-title">—</div>
           <div class="result-author" id="result-author">—</div>
         </div>
       </div>
 
     </div>
+
+    <!-- main.js se carga como módulo ES para poder usar import/export.
+         Se carga al final del body para que el DOM esté disponible al ejecutarse -->
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>
