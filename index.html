@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>¿Cuál leo?</title>
+    <link rel="stylesheet" href="/src/style.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.4/p5.min.js"></script>
+  </head>
+  <body>
+    <div id="app">
+
+      <!-- CABECERA -->
+      <header>
+        <h1>¿Cual leo?</h1>
+        <p class="subtitle">Tu proxima lectura te espera</p>
+      </header>
+
+      <!-- TABS -->
+      <div class="tabs">
+        <button class="tab active" id="tab-btn-list">
+          Mis pendientes <span class="count-badge" id="count">0</span>
+        </button>
+        <button class="tab" id="tab-btn-random">¡Decídete!</button>
+      </div>
+
+      <!-- PANTALLA: MIS PENDIENTES -->
+      <div class="content" id="tab-list">
+        <div class="add-book">
+          <input type="text" id="input-title" placeholder="Título del libro..." />
+          <input type="text" id="input-author" placeholder="Aut@r..." />
+          <button class="add-btn" id="add-btn">+ Añadir a mis pendientes</button>
+        </div>
+        <div class="section-label">Mis pendientes</div>
+        <div class="book-list" id="book-list">
+        </div>
+      </div>
+
+      <!-- PANTALLA: ELEGIR -->
+      <div class="content" id="tab-random" style="display:none;">
+        <div class="canvas-area" id="canvas-container"></div>
+        <button class="shake-btn" id="shake-btn">Agita el móvil o haz clic aquí</button>
+        <div class="result-card" id="result-card">
+          <div class="result-deco">✦ ✦ ✦</div>
+          <div class="result-label">¡Decídete!</div>
+          <div class="result-title" id="result-title">—</div>
+          <div class="result-author" id="result-author">—</div>
+        </div>
+      </div>
+
+    </div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

@@ -1,0 +1,322 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Montserrat', sans-serif;
+  background: #f9f5f0;
+  min-height: 100vh;
+  max-width: 430px;
+  margin: 0 auto;
+}
+
+/* CABECERA */
+header {
+  background: #f2e8e0;
+  padding: 2rem 1.25rem 0.85rem;
+  text-align: center;
+}
+
+.deco-top {
+  font-size: 13px;
+  color: #c4b0b8;
+  margin-bottom: 6px;
+  letter-spacing: 8px;
+}
+
+h1 {
+  font-size: 26px;
+  font-weight: 700;
+  color: #3d2e35;
+  letter-spacing: -0.5px;
+}
+
+.subtitle {
+  font-size: 11px;
+  color: #c4b0b8;
+  letter-spacing: 0.1em;
+  margin-top: 4px;
+  font-weight: 400;
+}
+
+/* TABS */
+.tabs {
+  display: flex;
+  background: #f2e8e0;
+  padding: 0.5rem 1rem 0.85rem;
+  gap: 8px;
+}
+
+.tab {
+  flex: 1;
+  padding: 8px 0;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.tab.active {
+  background: #9e8aa0;
+  color: #fff;
+}
+
+.tab:not(.active) {
+  background: rgba(158, 138, 160, 0.12);
+  color: #9e8aa0;
+}
+
+.count-badge {
+  background: white;
+  color: #9e8aa0;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 8px;
+  margin-left: 3px;
+}
+
+.tab.active .count-badge {
+  background: rgba(255,255,255,0.3);
+  color: white;
+}
+
+/* CONTENIDO */
+.content {
+  flex: 1;
+  padding: 1rem 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: #f9f5f0;
+  min-height: calc(100vh - 160px);
+}
+
+/* AÑADIR LIBRO */
+.add-book {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 14px;
+  border: 1.5px solid #e0d4cc;
+}
+
+.add-book input {
+  width: 100%;
+  border: 1.5px solid #e0d4cc;
+  background: #f9f5f0;
+  border-radius: 10px;
+  padding: 9px 16px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 12px;
+  color: #3d2e35;
+  margin-bottom: 8px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.add-book input:focus {
+  border-color: #9e8aa0;
+}
+
+.add-book input::placeholder {
+  color: #c4b0b8;
+}
+
+.add-btn {
+  width: 100%;
+  padding: 10px;
+  background: #9e8aa0;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.add-btn:hover {
+  background: #8a7690;
+}
+
+/* ETIQUETA DE SECCIÓN */
+.section-label {
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #c4b0b8;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 4px;
+}
+
+.section-label::after {
+  content: '';
+  flex: 1;
+  height: 1.5px;
+  background: #e0d4cc;
+  border-radius: 4px;
+}
+
+/* LISTA DE LIBROS */
+.book-list {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.book-item {
+  background: white;
+  border-radius: 12px;
+  padding: 10px 14px;
+  border: 1.5px solid #e0d4cc;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  animation: slideIn 0.25s ease;
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.book-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.book-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.book-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #3d2e35;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.book-author {
+  font-size: 11px;
+  color: #c4b0b8;
+  margin-top: 1px;
+  font-weight: 400;
+}
+
+.book-del {
+  background: #f9f5f0;
+  border: none;
+  cursor: pointer;
+  color: #c4b0b8;
+  font-size: 16px;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.book-del:hover {
+  background: #e0d4cc;
+  color: #9e8aa0;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 2rem 1rem;
+  color: #c4b0b8;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+/* SORTEAR */
+.canvas-area {
+  background: #2a1f24;
+  border-radius: 14px;
+  overflow: hidden;
+  height: 260px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.canvas-area canvas {
+  display: block;
+}
+
+.shake-btn {
+  background: #9e8aa0;
+  border: none;
+  border-radius: 10px;
+  padding: 14px;
+  color: white;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  width: 100%;
+  transition: transform 0.1s, background 0.2s;
+  letter-spacing: 0.02em;
+}
+
+.shake-btn:hover { background: #8a7690; }
+.shake-btn:active { transform: scale(0.97); }
+
+/* RESULTADO */
+.result-card {
+  background: #f2e8e0;
+  border-radius: 14px;
+  padding: 16px;
+  text-align: center;
+  display: none;
+  border: 1.5px solid #e0d4cc;
+}
+
+.result-deco {
+  font-size: 12px;
+  color: #c4b0b8;
+  letter-spacing: 8px;
+  margin-bottom: 6px;
+}
+
+.result-label {
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #9e8aa0;
+  font-weight: 600;
+}
+
+.result-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #3d2e35;
+  margin-top: 5px;
+  line-height: 1.25;
+}
+
+.result-author {
+  font-size: 12px;
+  color: #9e8aa0;
+  margin-top: 3px;
+  font-weight: 400;
+}
