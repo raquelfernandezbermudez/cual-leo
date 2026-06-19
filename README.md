@@ -33,11 +33,10 @@ npx cap open android
 ## APIKey
 
 La clave de Google Books API se entrega en archivo separado `api-key.txt`.  
-**No exponer en repositorios públicos.**
 
 ## Terminal de pruebas
 
-Probado en: [modelo] con Android [versión]
+Probado en: Emulador Pixel 8 con Android 15 (API 37.0)
 
 ## Licencia
 
