@@ -1,0 +1,643 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Montserrat', sans-serif;
+  background: #f9f5f0;
+  min-height: 100vh;
+  max-width: 430px;
+  margin: 0 auto;
+}
+
+/* =============================================
+   CABECERA
+   ============================================= */
+header {
+  background: #f2e8e0;
+  padding: 2rem 1.25rem 0.85rem;
+  text-align: center;
+}
+
+h1 {
+  font-size: 26px;
+  font-weight: 700;
+  color: #3d2e35;
+  letter-spacing: -0.5px;
+}
+
+.subtitle {
+  font-size: 11px;
+  color: #c4b0b8;
+  letter-spacing: 0.1em;
+  margin-top: 4px;
+  font-weight: 400;
+}
+
+/* =============================================
+   TABS — ahora son tres
+   ============================================= */
+.tabs {
+  display: flex;
+  background: #f2e8e0;
+  padding: 0.5rem 1rem 0.85rem;
+  gap: 6px;
+}
+
+.tab {
+  flex: 1;
+  padding: 8px 4px;
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: 'Montserrat', sans-serif;
+  white-space: nowrap;
+}
+
+.tab.active {
+  background: #9e8aa0;
+  color: #fff;
+}
+
+.tab:not(.active) {
+  background: rgba(158, 138, 160, 0.12);
+  color: #9e8aa0;
+}
+
+.count-badge {
+  background: white;
+  color: #9e8aa0;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 8px;
+  margin-left: 3px;
+}
+
+.tab.active .count-badge {
+  background: rgba(255,255,255,0.3);
+  color: white;
+}
+
+/* =============================================
+   CONTENIDO GENERAL
+   ============================================= */
+.content {
+  flex: 1;
+  padding: 1rem 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: #f9f5f0;
+  min-height: calc(100vh - 160px);
+}
+
+/* =============================================
+   AÑADIR LIBRO (con búsqueda en API)
+   ============================================= */
+.add-book {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 14px;
+  border: 1.5px solid #e0d4cc;
+  position: relative; /* necesario para posicionar el dropdown de sugerencias */
+}
+
+/* Wrapper del input con spinner superpuesto */
+.search-wrapper {
+  position: relative;
+  margin-bottom: 8px;
+}
+
+.search-wrapper input {
+  width: 100%;
+  border: 1.5px solid #e0d4cc;
+  background: #f9f5f0;
+  border-radius: 10px;
+  padding: 9px 36px 9px 16px; /* espacio a la derecha para el spinner */
+  font-family: 'Montserrat', sans-serif;
+  font-size: 12px;
+  color: #3d2e35;
+  outline: none;
+  transition: border-color 0.2s;
+  margin-bottom: 0;
+}
+
+.search-wrapper input:focus {
+  border-color: #9e8aa0;
+}
+
+.search-wrapper input::placeholder {
+  color: #c4b0b8;
+}
+
+/* Spinner de carga de la API */
+.search-spinner {
+  display: none;
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 14px;
+  height: 14px;
+  border: 2px solid #e0d4cc;
+  border-top-color: #9e8aa0;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: translateY(-50%) rotate(360deg); }
+}
+
+/* Dropdown de sugerencias de Google Books */
+.suggestions {
+  display: none;
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  top: calc(14px + 38px + 8px); /* padding-top + altura-input + margin */
+  background: white;
+  border-radius: 12px;
+  border: 1.5px solid #e0d4cc;
+  box-shadow: 0 8px 24px rgba(61, 46, 53, 0.12);
+  z-index: 100;
+  overflow: hidden;
+  max-height: 280px;
+  overflow-y: auto;
+}
+
+.suggestion-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  cursor: pointer;
+  transition: background 0.15s;
+  border-bottom: 1px solid #f2e8e0;
+}
+
+.suggestion-item:last-child {
+  border-bottom: none;
+}
+
+.suggestion-item:hover {
+  background: #f9f5f0;
+}
+
+/* Miniatura de portada en el dropdown */
+.suggestion-thumb {
+  width: 32px;
+  height: 44px;
+  border-radius: 4px;
+  background: #e0d4cc;
+  flex-shrink: 0;
+}
+
+.suggestion-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.suggestion-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: #3d2e35;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.suggestion-author {
+  font-size: 10px;
+  color: #c4b0b8;
+  margin-top: 2px;
+}
+
+/* Input de autor (sin wrapper) */
+.add-book > input[type="text"] {
+  width: 100%;
+  border: 1.5px solid #e0d4cc;
+  background: #f9f5f0;
+  border-radius: 10px;
+  padding: 9px 16px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 12px;
+  color: #3d2e35;
+  margin-bottom: 8px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.add-book > input[type="text"]:focus {
+  border-color: #9e8aa0;
+}
+
+.add-book > input[type="text"]::placeholder {
+  color: #c4b0b8;
+}
+
+.add-btn {
+  width: 100%;
+  padding: 10px;
+  background: #9e8aa0;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.add-btn:hover {
+  background: #8a7690;
+}
+
+/* =============================================
+   ETIQUETA DE SECCIÓN
+   ============================================= */
+.section-label {
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #c4b0b8;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 4px;
+}
+
+.section-label::after {
+  content: '';
+  flex: 1;
+  height: 1.5px;
+  background: #e0d4cc;
+  border-radius: 4px;
+}
+
+/* =============================================
+   LISTA DE LIBROS (ahora con miniatura de portada)
+   ============================================= */
+.book-list {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.book-item {
+  background: white;
+  border-radius: 12px;
+  padding: 10px 14px;
+  border: 1.5px solid #e0d4cc;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  animation: slideIn 0.25s ease;
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Miniatura de portada en la lista — puede ser imagen o punto de color */
+.book-thumb {
+  width: 32px;
+  height: 44px;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+/* Versión sin portada: cuadrado de color plano */
+.book-thumb--color {
+  border-radius: 4px;
+}
+
+.book-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.book-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #3d2e35;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.book-author {
+  font-size: 11px;
+  color: #c4b0b8;
+  margin-top: 1px;
+  font-weight: 400;
+}
+
+.book-del {
+  background: #f9f5f0;
+  border: none;
+  cursor: pointer;
+  color: #c4b0b8;
+  font-size: 16px;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.book-del:hover {
+  background: #e0d4cc;
+  color: #9e8aa0;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 2rem 1rem;
+  color: #c4b0b8;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.8;
+}
+
+/* =============================================
+   SORTEAR (canvas y botón)
+   ============================================= */
+.canvas-area {
+  background: #2a1f24;
+  border-radius: 14px;
+  overflow: hidden;
+  height: 260px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.canvas-area canvas {
+  display: block;
+}
+
+.shake-btn {
+  background: #9e8aa0;
+  border: none;
+  border-radius: 10px;
+  padding: 14px;
+  color: white;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  width: 100%;
+  transition: transform 0.1s, background 0.2s;
+  letter-spacing: 0.02em;
+}
+
+.shake-btn:hover { background: #8a7690; }
+.shake-btn:active { transform: scale(0.97); }
+
+/* =============================================
+   TARJETA DE RESULTADO (ampliada con portada y meta)
+   ============================================= */
+.result-card {
+  background: #f2e8e0;
+  border-radius: 14px;
+  padding: 16px;
+  text-align: center;
+  display: none;
+  border: 1.5px solid #e0d4cc;
+}
+
+.result-deco {
+  font-size: 12px;
+  color: #c4b0b8;
+  letter-spacing: 8px;
+  margin-bottom: 8px;
+}
+
+.result-label {
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #9e8aa0;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+/* Portada del libro ganador */
+.result-cover {
+  width: 80px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 6px;
+  margin: 0 auto 10px;
+  display: block;
+  box-shadow: 0 4px 16px rgba(61, 46, 53, 0.18);
+}
+
+.result-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #3d2e35;
+  margin-top: 5px;
+  line-height: 1.25;
+}
+
+.result-author {
+  font-size: 12px;
+  color: #9e8aa0;
+  margin-top: 3px;
+  font-weight: 400;
+}
+
+/* Metadatos: año, páginas, categoría */
+.result-meta {
+  font-size: 10px;
+  color: #c4b0b8;
+  margin-top: 8px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+/* Sinopsis breve */
+.result-description {
+  font-size: 11px;
+  color: #7a6a72;
+  margin-top: 10px;
+  line-height: 1.6;
+  text-align: left;
+  background: white;
+  border-radius: 10px;
+  padding: 10px 12px;
+  border: 1px solid #e0d4cc;
+}
+
+/* =============================================
+   PESTAÑA DESCUBRIR (nueva en PR2)
+   ============================================= */
+
+/* Buscador de Descubrir */
+.discover-search {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: white;
+  border-radius: 14px;
+  padding: 14px;
+  border: 1.5px solid #e0d4cc;
+}
+
+.discover-search .search-wrapper {
+  margin-bottom: 0;
+}
+
+/* Estado vacío de Descubrir */
+.discover-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 3rem 1rem;
+  color: #c4b0b8;
+  text-align: center;
+}
+
+.discover-empty-icon {
+  font-size: 32px;
+  opacity: 0.5;
+}
+
+.discover-empty p {
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.6;
+}
+
+/* Grid de tarjetas de resultados */
+.discover-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Tarjeta individual de resultado de Descubrir */
+.discover-card {
+  background: white;
+  border-radius: 14px;
+  border: 1.5px solid #e0d4cc;
+  overflow: hidden;
+  display: flex;
+  gap: 12px;
+  padding: 12px;
+  animation: slideIn 0.25s ease;
+}
+
+/* Portada en la tarjeta de Descubrir */
+.discover-cover {
+  width: 56px;
+  height: 80px;
+  border-radius: 6px;
+  background: #e0d4cc;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.discover-cover-placeholder {
+  font-size: 22px;
+  font-weight: 700;
+  color: white;
+  opacity: 0.7;
+}
+
+/* Info de la tarjeta de Descubrir */
+.discover-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.discover-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #3d2e35;
+  line-height: 1.3;
+  /* Permitimos 2 líneas de título */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.discover-author {
+  font-size: 11px;
+  color: #9e8aa0;
+  font-weight: 500;
+}
+
+.discover-meta {
+  font-size: 10px;
+  color: #c4b0b8;
+  margin-top: 2px;
+}
+
+.discover-desc {
+  font-size: 10px;
+  color: #7a6a72;
+  line-height: 1.5;
+  margin-top: 4px;
+  /* Máximo 3 líneas de descripción */
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Botón de añadir en la tarjeta de Descubrir */
+.discover-add-btn {
+  align-self: flex-start;
+  margin-top: 6px;
+  padding: 5px 12px;
+  background: #9e8aa0;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s;
+  white-space: nowrap;
+}
+
+.discover-add-btn:hover {
+  background: #8a7690;
+}
+
+/* Estado "ya añadido" */
+.discover-add-btn--added {
+  background: #e0d4cc;
+  color: #9e8aa0;
+  cursor: default;
+}
+
+.discover-add-btn--added:hover {
+  background: #e0d4cc;
+}

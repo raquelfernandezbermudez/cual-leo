@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- viewport-fit=cover permite que la app ocupe toda la pantalla en móviles con notch -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>¿Cuál leo?</title>
+
+    <!-- Hoja de estilos principal de la app -->
+    <link rel="stylesheet" href="/src/style.css" />
+
+    <!-- p5.js se carga desde CDN como script global para evitar conflictos con los módulos ES de Vite.
+         Al cargarlo así, p5 queda disponible en el scope global y podemos usarlo en modo instancia
+         desde main.js sin necesidad de importarlo como módulo -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.4/p5.min.js"></script>
+  </head>
+  <body>
+    <div id="app">
+
+      <!-- CABECERA: título y subtítulo de la app -->
+      <header>
+        <h1>¿Cuál leo?</h1>
+        <p class="subtitle">Tu próxima lectura te espera</p>
+      </header>
+
+      <!-- TABS: navegación entre las tres pantallas principales. -->
+      <div class="tabs">
+        <!-- Tab activa por defecto: lista de pendientes -->
+        <button class="tab active" id="tab-btn-list">
+          Pendientes
+          <span class="count-badge" id="count">0</span>
+        </button>
+        <!-- Tab de sorteo -->
+        <button class="tab" id="tab-btn-random">¡Decídete!</button>
+        <!-- Tab nueva: descubrir libros via Google Books API -->
+        <button class="tab" id="tab-btn-discover">Descubrir</button>
+      </div>
+
+      <!-- =============================================
+           PANTALLA 1: MIS PENDIENTES
+           ============================================= -->
+      <div class="content" id="tab-list">
+
+        <!-- Formulario para añadir libros con búsqueda en Google Books.
+             El campo de título activa la búsqueda automática en la API.
+             No usamos <form> para evitar el comportamiento de submit del navegador -->
+        <div class="add-book">
+          <div class="search-wrapper">
+            <input
+              type="text"
+              id="input-title"
+              placeholder="Busca un libro por título..."
+              autocomplete="off"
+            />
+            <!-- Spinner que se muestra mientras se busca en la API -->
+            <div class="search-spinner" id="search-spinner"></div>
+          </div>
+
+          <!-- Dropdown de sugerencias de Google Books.
+               Se rellena dinámicamente desde searchBooks() en main.js -->
+          <div class="suggestions" id="suggestions"></div>
+
+          <!-- Campo de autor: se puede rellenar manualmente si no se usa la búsqueda,
+               o se autocompleta al seleccionar una sugerencia -->
+          <input type="text" id="input-author" placeholder="Aut@r (opcional)..." />
+
+          <!-- El evento click de este botón se vincula desde main.js -->
+          <button class="add-btn" id="add-btn">+ Añadir a mis pendientes</button>
+        </div>
+
+        <!-- Etiqueta de sección -->
+        <div class="section-label">Mis pendientes</div>
+
+        <!-- Contenedor de la lista de libros.
+             Se rellena dinámicamente desde la función renderList() en main.js -->
+        <div class="book-list" id="book-list"></div>
+      </div>
+
+      <!-- =============================================
+           PANTALLA 2: ¡DECÍDETE! (SORTEO)
+           ============================================= -->
+      <div class="content" id="tab-random" style="display:none;">
+
+        <!-- Contenedor del canvas de p5.js.
+             La instancia de p5 se inyecta aquí desde initP5() en main.js -->
+        <div class="canvas-area" id="canvas-container"></div>
+
+        <!-- Botón principal de sorteo.
+             También se activa agitando el móvil gracias al acelerómetro -->
+        <button class="shake-btn" id="shake-btn">Agita el móvil o haz clic aquí</button>
+
+        <!-- Tarjeta de resultado, oculta hasta que termina la animación de sorteo.
+             Se muestra desde showResult() en main.js con el libro ganador -->
+        <div class="result-card" id="result-card">
+          <div class="result-deco">✦ ✦ ✦</div>
+          <div class="result-label">¡Tu próxima lectura!</div>
+
+          <!-- Portada del libro ganador obtenida de Google Books API.
+               Se muestra solo si el libro tiene thumbnail guardado -->
+          <img class="result-cover" id="result-cover" src="" alt="Portada" style="display:none;" />
+
+          <!-- Título y autor se rellenan dinámicamente desde main.js -->
+          <div class="result-title" id="result-title">—</div>
+          <div class="result-author" id="result-author">—</div>
+
+          <!-- Info extra: año, páginas y categoría si están disponibles -->
+          <div class="result-meta" id="result-meta"></div>
+
+          <!-- Sinopsis breve si está disponible en la API -->
+          <div class="result-description" id="result-description"></div>
+        </div>
+      </div>
+
+      <!-- =============================================
+           PANTALLA 3: DESCUBRIR (NUEVA EN PR2)
+           Permite buscar libros en Google Books y añadirlos a pendientes
+           ============================================= -->
+      <div class="content" id="tab-discover" style="display:none;">
+
+        <!-- Buscador de la sección Descubrir -->
+        <div class="discover-search">
+          <div class="search-wrapper">
+            <input
+              type="text"
+              id="discover-input"
+              placeholder="Busca por título, autor o tema..."
+              autocomplete="off"
+            />
+            <div class="search-spinner" id="discover-spinner"></div>
+          </div>
+          <button class="add-btn" id="discover-btn">Buscar</button>
+        </div>
+
+        <!-- Estado vacío inicial de Descubrir -->
+        <div class="discover-empty" id="discover-empty">
+          <div class="discover-empty-icon">🔍</div>
+          <p>Busca libros para descubrir tu próxima lectura</p>
+        </div>
+
+        <!-- Grid de resultados de la búsqueda en Google Books.
+             Se rellena dinámicamente desde renderDiscoverResults() en main.js -->
+        <div class="discover-grid" id="discover-grid"></div>
+
+      </div>
+
+    </div>
+
+    <!-- main.js se carga como módulo ES para poder usar import/export.
+         Se carga al final del body para que el DOM esté disponible al ejecutarse -->
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
